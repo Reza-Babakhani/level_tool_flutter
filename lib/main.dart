@@ -168,7 +168,7 @@ class _MyAppState extends State<MyApp> {
                                         bottom: y > 0 ? y * 10 : 0,
                                         left: x > 0 ? x * 10 : 0,
                                         right: x > 0 ? 0 : x * -10),
-                                    child: CircleAvatar(
+                                    child: const CircleAvatar(
                                       backgroundColor: Colors.black,
                                     ),
                                   )),

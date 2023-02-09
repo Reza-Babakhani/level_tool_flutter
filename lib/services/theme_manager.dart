@@ -5,18 +5,20 @@ import 'storage_manager.dart';
 class ThemeNotifier with ChangeNotifier {
   final darkTheme = ThemeData(
     primaryColor: const Color(0xFF212121),
-    brightness: Brightness.dark,
+    //brightness: Brightness.dark,
     dividerColor: Colors.black12,
     colorScheme: ColorScheme.fromSwatch(primarySwatch: MyPalette.firstPalette)
-        .copyWith(background: const Color(0xFF212121)),
+        .copyWith(
+            background: const Color(0xFF212121), brightness: Brightness.dark),
   );
 
   final lightTheme = ThemeData(
     primaryColor: Colors.white,
-    brightness: Brightness.light,
+    //brightness: Brightness.light,
     dividerColor: Colors.white54,
     colorScheme: ColorScheme.fromSwatch(primarySwatch: MyPalette.firstPalette)
-        .copyWith(background: const Color(0xFFE5E5E5)),
+        .copyWith(
+            background: const Color(0xFFE5E5E5), brightness: Brightness.light),
   );
 
   ThemeData? _themeData;

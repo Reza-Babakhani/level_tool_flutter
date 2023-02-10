@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:level/services/theme_manager.dart';
 import 'package:provider/provider.dart';
@@ -65,8 +63,18 @@ class _MyAppState extends State<MyApp> {
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
-        x = event.x;
-        y = event.y;
+        try {
+          var halfX = _xKey.currentContext!.size!.width / 2;
+          var halfY = _yKey.currentContext!.size!.height / 2;
+          var centerX = halfX - 20;
+          var centerY = halfY - 20;
+
+          x = ((event.x / 10) * halfX) + centerX;
+          y = ((event.y / -10) * halfY) + centerY;
+        } catch (ex) {
+          x = event.x;
+          y = event.y;
+        }
       });
     }));
   }
@@ -102,10 +110,6 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ],
                   ),
-                  Text(
-                    "x: ${x}\ny: ${y}",
-                    textAlign: TextAlign.center,
-                  ),
                   SingleChildScrollView(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -113,34 +117,47 @@ class _MyAppState extends State<MyApp> {
                         const SizedBox(
                           height: 100,
                         ),
-                        Neumorphic(
-                          style: NeumorphicStyle(
-                              depth: -10,
-                              boxShape: NeumorphicBoxShape.roundRect(
-                                  BorderRadius.circular(25))),
-                          child: SizedBox(
-                            key: _xKey,
-                            height: 50,
-                            width: double.infinity,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: x > 0
-                                      ? EdgeInsets.only(right: 0, left: x * 10)
-                                      : EdgeInsets.only(
-                                          right: x * -10, left: 0),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: AspectRatio(
-                                      aspectRatio: 1,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.red,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 70),
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                                depth: -10,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(25))),
+                            child: SizedBox(
+                              key: _xKey,
+                              height: 50,
+                              width: double.infinity,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Stack(children: [
+                                  Positioned(
+                                    left: x,
+                                    child: Neumorphic(
+                                      style: const NeumorphicStyle(
+                                          color: Colors.black,
+                                          boxShape:
+                                              NeumorphicBoxShape.circle()),
+                                      child: const SizedBox(
+                                        height: 34,
+                                        width: 34,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Center(
+                                    child: Container(
+                                      height: 34,
+                                      width: 34,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.red.shade700,
+                                              width: 2),
+                                          shape: BoxShape.circle),
+                                    ),
+                                  ),
+                                ]),
+                              ),
                             ),
                           ),
                         ),
@@ -155,28 +172,41 @@ class _MyAppState extends State<MyApp> {
                               child: Container(
                                 key: _xyKey,
                                 child: Neumorphic(
-                                  style: NeumorphicStyle(
-                                    depth: -10,
-                                    boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(25),
+                                  style: const NeumorphicStyle(
+                                      depth: -10,
+                                      boxShape: NeumorphicBoxShape.circle()),
+                                  child: Stack(children: [
+                                    Positioned(
+                                      top: y,
+                                      left: x,
+                                      child: Neumorphic(
+                                        style: const NeumorphicStyle(
+                                            color: Colors.black,
+                                            boxShape:
+                                                NeumorphicBoxShape.circle()),
+                                        child: const SizedBox(
+                                          height: 34,
+                                          width: 34,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  child: Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: y > 0 ? 0 : y * -10,
-                                        bottom: y > 0 ? y * 10 : 0,
-                                        left: x > 0 ? x * 10 : 0,
-                                        right: x > 0 ? 0 : x * -10),
-                                    child: const CircleAvatar(
-                                      backgroundColor: Colors.black,
+                                    Center(
+                                      child: Container(
+                                        height: 34,
+                                        width: 34,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.red.shade700,
+                                                width: 2),
+                                            shape: BoxShape.circle),
+                                      ),
                                     ),
-                                  )),
+                                  ]),
                                 ),
                               ),
                             )),
                             const SizedBox(
-                              width: 25,
+                              width: 20,
                             ),
                             Neumorphic(
                               style: NeumorphicStyle(
@@ -189,31 +219,41 @@ class _MyAppState extends State<MyApp> {
                                 key: _yKey,
                                 width: 50,
                                 height: MediaQuery.of(context).size.width - 100,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: y > 0
-                                            ? EdgeInsets.only(
-                                                top: 0, bottom: y * 10)
-                                            : EdgeInsets.only(
-                                                top: y * -10, bottom: 0),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: AspectRatio(
-                                            aspectRatio: 1,
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.blue,
-                                            ),
-                                          ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Stack(children: [
+                                    Positioned(
+                                      top: y,
+                                      child: Neumorphic(
+                                        style: const NeumorphicStyle(
+                                            color: Colors.black,
+                                            boxShape:
+                                                NeumorphicBoxShape.circle()),
+                                        child: const SizedBox(
+                                          height: 34,
+                                          width: 34,
                                         ),
                                       ),
-                                    ]),
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        height: 34,
+                                        width: 34,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.red.shade700,
+                                                width: 2),
+                                            shape: BoxShape.circle),
+                                      ),
+                                    ),
+                                  ]),
+                                ),
                               ),
                             )
                           ],
                         ),
-                        ElevatedButton(
+                        /* ElevatedButton(
                             onPressed: () {
                               print(
                                   "x height: ${_xKey.currentContext?.size?.height.toInt().toString()}");
@@ -228,7 +268,7 @@ class _MyAppState extends State<MyApp> {
                               print(
                                   "xy width: ${_xyKey.currentContext?.size?.width.toInt().toString()}");
                             },
-                            child: Text("click"))
+                            child: Text("click")) */
                       ],
                     ),
                   )

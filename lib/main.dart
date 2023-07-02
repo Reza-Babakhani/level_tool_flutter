@@ -26,16 +26,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<void> ad() async {
-    String adId = await TapsellPlus.instance.requestStandardBannerAd(
-        "63e506acb5c4a4614cb5de3e", TapsellPlusBannerType.BANNER_320x50);
+    try {
+      String adId = await TapsellPlus.instance.requestStandardBannerAd(
+          "63e506acb5c4a4614cb5de3e", TapsellPlusBannerType.BANNER_320x50);
 
-    await TapsellPlus.instance.showStandardBannerAd(adId,
-        TapsellPlusHorizontalGravity.BOTTOM, TapsellPlusVerticalGravity.CENTER,
-        margin: const EdgeInsets.only(bottom: 1), onOpened: (map) {
-      // Ad opened
-    }, onError: (map) {
-      // Error when showing ad
-    });
+      await TapsellPlus.instance.showStandardBannerAd(
+          adId,
+          TapsellPlusHorizontalGravity.BOTTOM,
+          TapsellPlusVerticalGravity.CENTER,
+          margin: const EdgeInsets.only(bottom: 1), onOpened: (map) {
+        // Ad opened
+      }, onError: (map) {
+        // Error when showing ad
+      });
+    } catch (e) {}
   }
 
   bool _isInit = true;
@@ -63,6 +67,9 @@ class _MyAppState extends State<MyApp> {
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
+        print(event.x);
+        print(event.y);
+
         try {
           var halfX = _xKey.currentContext!.size!.width / 2;
           var halfY = _yKey.currentContext!.size!.height / 2;
@@ -114,9 +121,10 @@ class _MyAppState extends State<MyApp> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        /*  Text("x: $x , y: $y"),
                         const SizedBox(
                           height: 100,
-                        ),
+                        ), */
                         Padding(
                           padding: const EdgeInsets.only(right: 70),
                           child: Neumorphic(
@@ -253,7 +261,7 @@ class _MyAppState extends State<MyApp> {
                             )
                           ],
                         ),
-                        /* ElevatedButton(
+                        /*  ElevatedButton(
                             onPressed: () {
                               print(
                                   "x height: ${_xKey.currentContext?.size?.height.toInt().toString()}");
@@ -268,7 +276,7 @@ class _MyAppState extends State<MyApp> {
                               print(
                                   "xy width: ${_xyKey.currentContext?.size?.width.toInt().toString()}");
                             },
-                            child: Text("click")) */
+                            child: Text("click"),), */
                       ],
                     ),
                   )

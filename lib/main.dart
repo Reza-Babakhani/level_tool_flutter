@@ -67,9 +67,6 @@ class _MyAppState extends State<MyApp> {
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
-        print(event.x);
-        print(event.y);
-
         try {
           var halfX = _xKey.currentContext!.size!.width / 2;
           var halfY = _yKey.currentContext!.size!.height / 2;
@@ -121,10 +118,9 @@ class _MyAppState extends State<MyApp> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        /*  Text("x: $x , y: $y"),
                         const SizedBox(
                           height: 100,
-                        ), */
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 70),
                           child: Neumorphic(
